@@ -2,6 +2,14 @@
   "name": "dsh-word-writing-spec",
   "version": "0.2.0",
   "description": "Word 写作规范插件：把《AI辅助开发文档格式规范指南》变成可执行的生成约束、审查/修复工具，以及可在设置面板调参的规则表。",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VisualStudioXu/dsh-word-writing-spec.git"
+  },
+  "homepage": "https://github.com/VisualStudioXu/dsh-word-writing-spec#readme",
+  "bugs": {
+    "url": "https://github.com/VisualStudioXu/dsh-word-writing-spec/issues"
+  },
   "license": "MIT",
   "type": "module",
   "main": "lib/index.js",
