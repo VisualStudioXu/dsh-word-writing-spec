@@ -1,0 +1,434 @@
+{
+  "$schema": "./docx-writing-spec.schema.json",
+  "meta": {
+    "id": "zyd-docx-writing-spec",
+    "title": "AI 辅助开发文档格式规范",
+    "subtitle": "（参照 GB/T 9704-2012 公文格式与本科毕业论文排版规范）",
+    "project": "ZYD-000-FJR-V22-2 方形卷绕机控制系统",
+    "source": "D:\\AITrae\\word\\AI辅助开发文档格式规范指南.docx",
+    "sourceSha256": "",
+    "parsedAt": "2026-10-17",
+    "version": "1.0.0"
+  },
+  "units": {
+    "cmToTwip": 567,
+    "ptToTwip": 20,
+    "cmToEmu": 360000,
+    "ptToEmu": 12700
+  },
+  "page": {
+    "size": "A4",
+    "widthCm": 21,
+    "heightCm": 29.7,
+    "marginsCm": {
+      "top": 3,
+      "bottom": 2.5,
+      "left": 3,
+      "right": 2.5
+    },
+    "leftMarginNoBindingCm": 2.8,
+    "gutterCm": 0.5,
+    "headerDistanceCm": 1.5,
+    "footerDistanceCm": 1.5,
+    "toleranceCm": 0.05
+  },
+  "body": {
+    "fontCN": "宋体",
+    "fontEN": "Times New Roman",
+    "sizePt": 12,
+    "sizeNameCN": "小四",
+    "lineSpacing": {
+      "type": "oneAndHalf",
+      "valuePt": 22
+    },
+    "firstLineIndentChars": 2,
+    "firstLineIndentEmu": 266700,
+    "alignment": "both",
+    "spaceBeforePt": 0,
+    "spaceAfterPt": 0,
+    "widowControl": true,
+    "fontFallbackCN": "仿宋_GB2312",
+    "fontFallbackEN": "Arial",
+    "color": "000000"
+  },
+  "headings": {
+    "maxLevel": 3,
+    "deeperLevelRepresentation": [
+      "（1）",
+      "①"
+    ],
+    "numberingGapSpaces": 2,
+    "firstLineIndentCt": false,
+    "alignment": "left",
+    "mustUseBuiltinStyles": true,
+    "levels": [
+      {
+        "level": 1,
+        "styleId": "Heading1",
+        "fontCN": "宋体",
+        "fontEN": "Times New Roman",
+        "sizePt": 16,
+        "sizeNameCN": "三号",
+        "bold": true,
+        "alignment": "left",
+        "numbering": "^\\d+$",
+        "numberingExample": "1",
+        "spaceBeforeLines": 0.5,
+        "spaceAfterLines": 0.25,
+        "spaceBeforePt": 12,
+        "spaceAfterPt": 6,
+        "pageBreakBefore": true,
+        "color": "000000"
+      },
+      {
+        "level": 2,
+        "styleId": "Heading2",
+        "fontCN": "宋体",
+        "fontEN": "Times New Roman",
+        "sizePt": 14,
+        "sizeNameCN": "四号",
+        "bold": true,
+        "alignment": "left",
+        "numbering": "^\\d+\\.\\d+$",
+        "numberingExample": "1.1",
+        "spaceBeforeLines": 0.3,
+        "spaceAfterLines": 0.15,
+        "spaceBeforePt": 8,
+        "spaceAfterPt": 4,
+        "pageBreakBefore": false,
+        "color": "000000"
+      },
+      {
+        "level": 3,
+        "styleId": "Heading3",
+        "fontCN": "宋体",
+        "fontEN": "Times New Roman",
+        "sizePt": 12,
+        "sizeNameCN": "小四+1pt",
+        "bold": true,
+        "alignment": "left",
+        "numbering": "^\\d+\\.\\d+\\.\\d+$",
+        "numberingExample": "1.1.1",
+        "spaceBeforeLines": 0,
+        "spaceAfterLines": 0,
+        "spaceBeforePt": 0,
+        "spaceAfterPt": 0,
+        "pageBreakBefore": false,
+        "color": "000000"
+      }
+    ],
+    "numberingScheme": "arabicDotted"
+  },
+  "toc": {
+    "enabled": true,
+    "title": "目录",
+    "titleFontCN": "宋体",
+    "titleSizePt": 16,
+    "titleBold": true,
+    "titleColor": "000000",
+    "entryFontCN": "宋体",
+    "entrySizePt": 12,
+    "entryColor": "000000",
+    "maxLevel": 3,
+    "showPageNumbers": true,
+    "alignment": "left"
+  },
+  "cover": {
+    "title": "",
+    "subtitle": "",
+    "showProject": true,
+    "showDate": true,
+    "titleFontCN": "宋体",
+    "titleFontEN": "Times New Roman",
+    "titleSizePt": 26,
+    "titleBold": true,
+    "color": "000000",
+    "alignment": "center",
+    "spaceBeforePt": 240
+  },
+  "table": {
+    "numberPattern": "^表\\s*\\d+-\\d+\\s*$|^表\\s*\\d+-\\d+\\s+",
+    "numberingScheme": "{chapter}-{seq}",
+    "captionPosition": "above",
+    "captionAlignment": "center",
+    "captionFontCN": "黑体",
+    "captionFontEN": "Times New Roman",
+    "captionSizePt": 10.5,
+    "captionSizeNameCN": "五号",
+    "captionBold": false,
+    "captionStyleId": "Caption",
+    "captionFormat": "表 x-x 标题",
+    "bodyFontCN": "宋体",
+    "bodyFontEN": "Times New Roman",
+    "bodySizePt": 10.5,
+    "headerRowBold": true,
+    "headerRowFontCN": "黑体",
+    "style": "Light Grid Accent 1",
+    "referenceInText": "见表 x-x",
+    "continuationPrefix": "续表 x-x",
+    "repeatHeaderOnBreak": true
+  },
+  "figure": {
+    "numberPattern": "^图\\s*\\d+-\\d+",
+    "numberingScheme": "{chapter}-{seq}",
+    "captionPosition": "below",
+    "captionAlignment": "center",
+    "captionFontCN": "宋体",
+    "captionFontEN": "Times New Roman",
+    "captionSizePt": 10.5,
+    "captionSizeNameCN": "五号",
+    "captionBold": false,
+    "captionStyleId": "Caption",
+    "referenceInText": "如图 x-x 所示",
+    "minDpi": 150,
+    "recommendedDpiRange": [
+      150,
+      200
+    ],
+    "paragraphLineSpacingMustNotBeExact": true,
+    "paragraphLineSpacingAllowed": [
+      "atLeast 1.5 lines",
+      "single"
+    ],
+    "paragraphAlignment": "center",
+    "paragraphSpaceBeforePt": 6,
+    "paragraphSpaceAfterPt": 6,
+    "embedding": "inline",
+    "color": "000000"
+  },
+  "code": {
+    "font": "Courier New",
+    "sizePtRange": [
+      8,
+      9
+    ],
+    "indentLeftCm": 1.2,
+    "firstLineIndentCt": false,
+    "lineSpacing": {
+      "type": "exact",
+      "valuePt": 16
+    },
+    "inlineCodeFont": "Courier New",
+    "commentRule": "注释解释为什么，而不是解释做了什么",
+    "stNamingConvention": "匈牙利命名法"
+  },
+  "headerFooter": {
+    "headerContent": "项目名 + 文档类型",
+    "headerFontCN": "宋体",
+    "headerFontEN": "Times New Roman",
+    "headerSizePt": 9,
+    "headerSizeNameCN": "小五",
+    "headerColor": "808080",
+    "headerAlignment": "center",
+    "hideHeaderOnCoverAndAbstract": true,
+    "pageNumberFormat": "-数字 -",
+    "pageNumberAlignment": "center",
+    "coverNoPageNumber": true,
+    "frontMatterNumeral": "upperRoman",
+    "bodyStartNumber": 1,
+    "appendixContinuesBody": true,
+    "pageNumberNumeral": "decimal",
+    "pageNumberPosition": "footer"
+  },
+  "sectionBreak": {
+    "newPagePerLevel1Heading": true,
+    "method": "pageBreak",
+    "forbiddenMethod": "emptyParagraphs",
+    "level2And3NewPage": false
+  },
+  "reference": {
+    "inTextCitation": "上标方括号",
+    "inTextPatterns": [
+      "[1]",
+      "[2,3]",
+      "[4-6]"
+    ],
+    "listStandard": "GB/T 7714-2015",
+    "fontCN": "仿宋_GB2312",
+    "fontEN": "Times New Roman",
+    "sizePt": 12,
+    "types": {
+      "J": "期刊",
+      "M": "专著",
+      "S": "标准",
+      "EB/OL": "电子文献"
+    },
+    "templates": {
+      "J": "[序号] 作者. 题名[J]. 刊名, 年份, 卷(期): 起止页码.",
+      "M": "[序号] 作者. 书名[M]. 版本(第1版不标注). 出版地: 出版者, 出版年.",
+      "S": "[序号] 标准编号, 标准名称[S].",
+      "EB/OL": "[序号] 作者. 题名[EB/OL]. (发布日期)[引用日期]. 路径."
+    }
+  },
+  "aiSupplement": {
+    "defaultFormat": "docx",
+    "codeReviewMayKeepMd": true,
+    "backupRequiredBeforeEdit": true,
+    "backupNamePattern": "{原文件名}_backup_{日期}.docx",
+    "backupLocation": "同目录",
+    "fileNamingPattern": "{文档类型}_{日期}.{扩展名}",
+    "fileNamingExample": "代码审查报告_20260717.docx",
+    "fileNamingForbidPureChinese": true,
+    "codeReviewSections": [
+      "修复状态确认表",
+      "优点总结",
+      "统计数据",
+      "不可合入清单",
+      "重构优先级",
+      "枚举类型建议清单"
+    ],
+    "codeReviewTemplate": "V5.0 提示词模板（双轮审查）",
+    "requiredDirs": [
+      "文档",
+      "脚本"
+    ],
+    "skillDir": ".trae/skills/",
+    "sourceDir": "src/",
+    "headingNormalize": {
+      "steps": [
+        "扫描",
+        "识别",
+        "展示候选待确认",
+        "备份后批量转换",
+        "输出报告并提示更新域"
+      ],
+      "backupBeforeConvert": true,
+      "mustShowCandidatesFirst": true,
+      "uncertainMarkPending": true,
+      "formatRules": {
+        "sizeLargerByPt": 2,
+        "requireAtLeast": 2,
+        "features": [
+          "字号明显大于正文",
+          "整段加粗",
+          "居中"
+        ]
+      },
+      "textPatterns": [
+        "^第[一二三四五六七八九十百]+[章节]",
+        "^[一二三四五六七八九十]+、",
+        "^（[一二三四五六七八九十]+）",
+        "^\\d+\\.(?=\\D|$)",
+        "^\\d+\\.\\d+(?=\\.|\\s|$)",
+        "^\\d+\\.\\d+\\.\\d+"
+      ],
+      "textPatternExclusions": [
+        "^\\d+）",
+        "^（\\d+）"
+      ],
+      "positionRules": {
+        "atDocumentStart": true,
+        "atSectionStart": true,
+        "maxChars": 20,
+        "standaloneParagraph": true
+      },
+      "levelDecision": {
+        "priority": [
+          "textNumbering",
+          "fontSizeDelta"
+        ],
+        "fontSizeDeltaThresholds": {
+          "level1": ">4pt",
+          "level2": "2-4pt",
+          "level3": "1-2pt"
+        },
+        "conflictResolution": "文字编号优先"
+      },
+      "safetyBoundaries": [
+        "必须备份后再转换",
+        "必须先展示候选列表",
+        "不确定标待确认，宁可少转",
+        "正文加粗短语不算标题",
+        "图表标题用 Caption 样式不用 Heading"
+      ],
+      "misjudgeCases": [
+        "加粗强调句",
+        "表/图标题",
+        "项目符号列表",
+        "摘要关键词元数据区块"
+      ]
+    }
+  },
+  "checklist": [
+    {
+      "id": "page-setup",
+      "label": "页面设置（纸张大小 {page.size}、页边距 {page.marginsCm.top}/{page.marginsCm.bottom}/{page.marginsCm.left}/{page.marginsCm.right}cm、页眉页脚距离 {page.headerDistanceCm}/{page.footerDistanceCm}cm）",
+      "rule": "page"
+    },
+    {
+      "id": "body-font",
+      "label": "正文字体（中文{body.fontCN}、英文 {body.fontEN}）",
+      "rule": "body.font"
+    },
+    {
+      "id": "line-spacing",
+      "label": "行距（{body.lineSpacing:spacing}）",
+      "rule": "body.lineSpacing"
+    },
+    {
+      "id": "indent",
+      "label": "段落缩进（首行缩进 {body.firstLineIndentChars} 字符）",
+      "rule": "body.firstLineIndent"
+    },
+    {
+      "id": "h1",
+      "label": "一级标题（{headings.levels.0.fontCN}{headings.levels.0.sizeNameCN}{headings.levels.0.bold:bold}{headings.levels.0.pageBreakBefore:pageBreak}）",
+      "rule": "headings.1"
+    },
+    {
+      "id": "h2",
+      "label": "二级标题（{headings.levels.1.fontCN}{headings.levels.1.sizeNameCN}{headings.levels.1.bold:bold}）",
+      "rule": "headings.2"
+    },
+    {
+      "id": "h3",
+      "label": "三级标题（{headings.levels.2.fontCN} {headings.levels.2.sizeNameCN}{headings.levels.2.bold:bold}）",
+      "rule": "headings.3"
+    },
+    {
+      "id": "table-number",
+      "label": "表格编号与表题（表 x-x，{table.captionPosition:position}，{table.captionAlignment:align}）",
+      "rule": "table"
+    },
+    {
+      "id": "figure-number",
+      "label": "插图编号与图题（图 x-x，{figure.captionPosition:position}，{figure.captionAlignment:align}）",
+      "rule": "figure"
+    },
+    {
+      "id": "code-block",
+      "label": "代码块（{code.font} {code.sizePtRange:range}，左缩进 {code.indentLeftCm}cm）",
+      "rule": "code"
+    },
+    {
+      "id": "page-number",
+      "label": "页码（{headerFooter.pageNumberFormat:pageNumber}，{headerFooter.pageNumberAlignment:align}）",
+      "rule": "headerFooter.pageNumber"
+    },
+    {
+      "id": "header",
+      "label": "页眉（{headerFooter.headerContent}，{headerFooter.headerFontCN}{headerFooter.headerSizeNameCN} {headerFooter.headerSizePt}pt {headerFooter.headerColor:color}）",
+      "rule": "headerFooter.header"
+    },
+    {
+      "id": "reference",
+      "label": "参考文献（{reference.listStandard}，{reference.inTextCitation}）",
+      "rule": "reference"
+    },
+    {
+      "id": "backup",
+      "label": "改文档前备份",
+      "rule": "aiSupplement.backup"
+    },
+    {
+      "id": "cover",
+      "label": "封面（{cover.titleFontCN} {cover.titleSizePt}pt{cover.titleBold:bold}，{cover.alignment:align}；标题为空时用 meta.title）",
+      "rule": "cover"
+    },
+    {
+      "id": "toc",
+      "label": "目录（{toc.title}，{toc.maxLevel} 级，可自动更新；使用内置 Heading 样式）",
+      "rule": "toc"
+    }
+  ]
+}

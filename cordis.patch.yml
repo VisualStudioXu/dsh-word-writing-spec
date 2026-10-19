@@ -1,0 +1,7 @@
+# dsh-word-writing-spec bundle patch: one Host row mounted under the package
+# name, resolved from the profile's own node_modules where
+# `dsh plugin --profile <profile> add <path>` installed this package.
+
+- insert:
+    - id: word-writing-spec
+      name: dsh-word-writing-spec

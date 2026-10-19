@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Word Writing Spec",
+    "description": "Turns the AI-assisted development document format spec into executable constraints: tools to audit a .docx, fix it to the spec, and scan for heading candidates, plus a configurable rule table in the settings panel — so delivered documents stop costing rework on page setup, fonts and line spacing, heading levels, figure and table numbering, and headers and footers."
+  }
+}

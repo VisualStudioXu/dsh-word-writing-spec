@@ -1,0 +1,979 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "./docx-writing-spec.schema.json",
+  "title": "AI 辅助开发文档格式规范（规则表）",
+  "description": "唯一规则来源。提示词注入、审查判定、修复写入三者都读这个文件，改这里等于同时改三处。",
+  "type": "object",
+  "required": [
+    "meta",
+    "page",
+    "body",
+    "headings",
+    "table",
+    "figure",
+    "code",
+    "headerFooter",
+    "cover",
+    "toc"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "meta": {
+      "type": "object",
+      "required": [
+        "id",
+        "title",
+        "version"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "subtitle": {
+          "type": "string"
+        },
+        "project": {
+          "type": "string"
+        },
+        "source": {
+          "type": "string",
+          "description": "规则来源文档路径"
+        },
+        "sourceSha256": {
+          "type": "string"
+        },
+        "parsedAt": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        }
+      }
+    },
+    "units": {
+      "type": "object",
+      "properties": {
+        "cmToTwip": {
+          "type": "number"
+        },
+        "ptToTwip": {
+          "type": "number"
+        },
+        "cmToEmu": {
+          "type": "number"
+        },
+        "ptToEmu": {
+          "type": "number"
+        }
+      }
+    },
+    "page": {
+      "type": "object",
+      "required": [
+        "size",
+        "marginsCm",
+        "headerDistanceCm",
+        "footerDistanceCm"
+      ],
+      "properties": {
+        "size": {
+          "type": "string",
+          "description": "纸张名称，只影响审查报告文案；实际尺寸以 widthCm/heightCm 为准。设置页下拉的档位见 lib/client.js 的 PAPER_SIZES（A3/A4/A5/A6/B5/Letter），此处不枚举，避免两处不同步。",
+          "examples": [
+            "A4",
+            "A5",
+            "B5",
+            "Letter"
+          ]
+        },
+        "widthCm": {
+          "type": "number"
+        },
+        "heightCm": {
+          "type": "number"
+        },
+        "marginsCm": {
+          "type": "object",
+          "required": [
+            "top",
+            "bottom",
+            "left",
+            "right"
+          ],
+          "properties": {
+            "top": {
+              "type": "number"
+            },
+            "bottom": {
+              "type": "number"
+            },
+            "left": {
+              "type": "number"
+            },
+            "right": {
+              "type": "number"
+            }
+          }
+        },
+        "leftMarginNoBindingCm": {
+          "type": "number",
+          "description": "不装订时的左边距"
+        },
+        "gutterCm": {
+          "type": "number"
+        },
+        "headerDistanceCm": {
+          "type": "number"
+        },
+        "footerDistanceCm": {
+          "type": "number"
+        },
+        "toleranceCm": {
+          "type": "number",
+          "description": "判定页边距时的容差；调大等于放宽审查"
+        }
+      }
+    },
+    "body": {
+      "type": "object",
+      "required": [
+        "fontCN",
+        "fontEN",
+        "sizePt",
+        "lineSpacing"
+      ],
+      "properties": {
+        "fontCN": {
+          "type": "string"
+        },
+        "fontEN": {
+          "type": "string"
+        },
+        "sizePt": {
+          "type": "number"
+        },
+        "sizeNameCN": {
+          "type": "string"
+        },
+        "lineSpacing": {
+          "type": "object",
+          "required": [
+            "type"
+          ],
+          "description": "行距。exact/atLeast/multiple 读 valuePt（磅或倍数）；single/oneAndHalf/double 的数值由方式本身决定，valuePt 不起作用。取值与中文名见 lib/spec.js 的 LINE_SPACING_MODES。",
+          "properties": {
+            "type": {
+              "enum": [
+                "single",
+                "oneAndHalf",
+                "double",
+                "multiple",
+                "atLeast",
+                "exact"
+              ]
+            },
+            "valuePt": {
+              "type": "number",
+              "minimum": 0
+            }
+          }
+        },
+        "firstLineIndentChars": {
+          "type": "number"
+        },
+        "firstLineIndentEmu": {
+          "type": "number"
+        },
+        "alignment": {
+          "enum": [
+            "both",
+            "left",
+            "center",
+            "right"
+          ]
+        },
+        "spaceBeforePt": {
+          "type": "number"
+        },
+        "spaceAfterPt": {
+          "type": "number"
+        },
+        "widowControl": {
+          "type": "boolean"
+        },
+        "fontFallbackCN": {
+          "type": "string",
+          "description": "中文回退字体，视为合规"
+        },
+        "fontFallbackEN": {
+          "type": "string"
+        },
+        "color": {
+          "type": "string",
+          "pattern": "^[0-9A-Fa-f]{6}$",
+          "description": "六位十六进制 RGB，不带 # 号。"
+        }
+      }
+    },
+    "headings": {
+      "type": "object",
+      "required": [
+        "maxLevel",
+        "numberingGapSpaces",
+        "levels"
+      ],
+      "properties": {
+        "maxLevel": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 6
+        },
+        "deeperLevelRepresentation": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "numberingGapSpaces": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "firstLineIndentCt": {
+          "type": "boolean",
+          "description": "标题是否保留首行缩进"
+        },
+        "alignment": {
+          "enum": [
+            "both",
+            "left",
+            "center",
+            "right"
+          ]
+        },
+        "mustUseBuiltinStyles": {
+          "type": "boolean"
+        },
+        "levels": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": [
+              "level",
+              "styleId",
+              "fontCN",
+              "sizePt",
+              "bold"
+            ],
+            "properties": {
+              "level": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "styleId": {
+                "type": "string",
+                "description": "内置样式 ID，如 Heading1"
+              },
+              "fontCN": {
+                "type": "string"
+              },
+              "fontEN": {
+                "type": "string"
+              },
+              "sizePt": {
+                "type": "number"
+              },
+              "sizeNameCN": {
+                "type": "string"
+              },
+              "bold": {
+                "type": "boolean"
+              },
+              "alignment": {
+                "enum": [
+                  "both",
+                  "left",
+                  "center",
+                  "right"
+                ]
+              },
+              "numbering": {
+                "type": "string",
+                "description": "编号形态正则（整串匹配）"
+              },
+              "numberingExample": {
+                "type": "string"
+              },
+              "spaceBeforeLines": {
+                "type": "number"
+              },
+              "spaceAfterLines": {
+                "type": "number"
+              },
+              "spaceBeforePt": {
+                "type": "number"
+              },
+              "spaceAfterPt": {
+                "type": "number"
+              },
+              "pageBreakBefore": {
+                "type": "boolean"
+              },
+              "numberingScheme": {
+                "type": "string",
+                "description": "可选，覆盖本级编号方案；省略则用 headings.numberingScheme。"
+              },
+              "color": {
+                "type": "string",
+                "pattern": "^[0-9A-Fa-f]{6}$",
+                "description": "六位十六进制 RGB，不带 # 号。"
+              }
+            }
+          }
+        },
+        "numberingScheme": {
+          "type": "string",
+          "description": "标题编号方案 ID，取值见 lib/spec.js 的 NUMBERING_SCHEMES（arabicDotted 1/1.1/1.1.1、chineseChapter 第一章/第一节/一、、chineseOrdinal 一、/（一）/1.、arabicParen 1/（1）/①）。方案决定每级编号的形态与「编号后是否留空格」，各级的 numbering/numberingExample 是设置页按方案解析出的值。"
+        }
+      }
+    },
+    "table": {
+      "type": "object",
+      "required": [
+        "captionPosition",
+        "captionFontCN",
+        "captionSizePt",
+        "bodyFontCN",
+        "bodySizePt"
+      ],
+      "properties": {
+        "numberPattern": {
+          "type": "string"
+        },
+        "numberingScheme": {
+          "type": "string"
+        },
+        "captionPosition": {
+          "enum": [
+            "above",
+            "below"
+          ]
+        },
+        "captionAlignment": {
+          "enum": [
+            "left",
+            "center",
+            "right"
+          ]
+        },
+        "captionFontCN": {
+          "type": "string"
+        },
+        "captionFontEN": {
+          "type": "string"
+        },
+        "captionSizePt": {
+          "type": "number"
+        },
+        "captionSizeNameCN": {
+          "type": "string"
+        },
+        "captionBold": {
+          "type": "boolean"
+        },
+        "captionStyleId": {
+          "type": "string"
+        },
+        "captionFormat": {
+          "type": "string"
+        },
+        "bodyFontCN": {
+          "type": "string"
+        },
+        "bodyFontEN": {
+          "type": "string"
+        },
+        "bodySizePt": {
+          "type": "number"
+        },
+        "headerRowBold": {
+          "type": "boolean"
+        },
+        "headerRowFontCN": {
+          "type": "string",
+          "description": "表头行单独校验，不要和正文混用"
+        },
+        "style": {
+          "type": "string"
+        },
+        "referenceInText": {
+          "type": "string"
+        },
+        "continuationPrefix": {
+          "type": "string"
+        },
+        "repeatHeaderOnBreak": {
+          "type": "boolean"
+        }
+      }
+    },
+    "figure": {
+      "type": "object",
+      "required": [
+        "captionPosition",
+        "captionFontCN",
+        "captionSizePt"
+      ],
+      "properties": {
+        "numberPattern": {
+          "type": "string"
+        },
+        "numberingScheme": {
+          "type": "string"
+        },
+        "captionPosition": {
+          "enum": [
+            "above",
+            "below"
+          ],
+          "description": "图题在图片上方还是下方；审计器按此方向查找图题，写入器也按此方向修复。"
+        },
+        "captionAlignment": {
+          "enum": [
+            "left",
+            "center",
+            "right"
+          ]
+        },
+        "captionFontCN": {
+          "type": "string"
+        },
+        "captionFontEN": {
+          "type": "string"
+        },
+        "captionSizePt": {
+          "type": "number"
+        },
+        "captionSizeNameCN": {
+          "type": "string"
+        },
+        "captionBold": {
+          "type": "boolean"
+        },
+        "captionStyleId": {
+          "type": "string"
+        },
+        "referenceInText": {
+          "type": "string"
+        },
+        "minDpi": {
+          "type": "integer"
+        },
+        "recommendedDpiRange": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "paragraphLineSpacingMustNotBeExact": {
+          "type": "boolean",
+          "description": "固定行距会裁切图片"
+        },
+        "paragraphLineSpacingAllowed": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "paragraphAlignment": {
+          "enum": [
+            "both",
+            "left",
+            "center",
+            "right"
+          ]
+        },
+        "paragraphSpaceBeforePt": {
+          "type": "number"
+        },
+        "paragraphSpaceAfterPt": {
+          "type": "number"
+        },
+        "embedding": {
+          "enum": [
+            "inline",
+            "floating"
+          ],
+          "description": "inline 为嵌入式（随文字流动），floating 为浮动式（wp:anchor）。"
+        },
+        "color": {
+          "type": "string",
+          "pattern": "^[0-9A-Fa-f]{6}$",
+          "description": "图题文字颜色"
+        }
+      }
+    },
+    "code": {
+      "type": "object",
+      "required": [
+        "font",
+        "sizePtRange",
+        "indentLeftCm"
+      ],
+      "properties": {
+        "font": {
+          "type": "string"
+        },
+        "sizePtRange": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "indentLeftCm": {
+          "type": "number"
+        },
+        "firstLineIndentCt": {
+          "type": "boolean"
+        },
+        "lineSpacing": {
+          "type": "object",
+          "required": [
+            "type"
+          ],
+          "properties": {
+            "type": {
+              "enum": [
+                "single",
+                "oneAndHalf",
+                "double",
+                "multiple",
+                "atLeast",
+                "exact"
+              ]
+            },
+            "valuePt": {
+              "type": "number",
+              "minimum": 0
+            }
+          }
+        },
+        "inlineCodeFont": {
+          "type": "string"
+        },
+        "commentRule": {
+          "type": "string"
+        },
+        "stNamingConvention": {
+          "type": "string"
+        }
+      }
+    },
+    "headerFooter": {
+      "type": "object",
+      "required": [
+        "headerFontCN",
+        "headerSizePt",
+        "pageNumberFormat"
+      ],
+      "properties": {
+        "headerContent": {
+          "type": "string"
+        },
+        "headerFontCN": {
+          "type": "string"
+        },
+        "headerFontEN": {
+          "type": "string"
+        },
+        "headerSizePt": {
+          "type": "number"
+        },
+        "headerSizeNameCN": {
+          "type": "string"
+        },
+        "headerColor": {
+          "type": "string",
+          "examples": [
+            "808080"
+          ]
+        },
+        "headerAlignment": {
+          "enum": [
+            "both",
+            "left",
+            "center",
+            "right"
+          ]
+        },
+        "hideHeaderOnCoverAndAbstract": {
+          "type": "boolean"
+        },
+        "pageNumberFormat": {
+          "type": "string",
+          "minLength": 1,
+          "description": "页码的完整样式。\"数字\" 是页码占位符，前后文字即前缀与后缀，例如 \"— 数字 —\" 渲染为 — 1 —，\"第 数字 页\" 渲染为 第 1 页。数字本身的形态（阿拉伯数字/罗马数字）由 pageNumberNumeral 决定。"
+        },
+        "pageNumberAlignment": {
+          "enum": [
+            "both",
+            "left",
+            "center",
+            "right"
+          ]
+        },
+        "coverNoPageNumber": {
+          "type": "boolean"
+        },
+        "frontMatterNumeral": {
+          "type": "string",
+          "enum": [
+            "roman",
+            "lowerRoman",
+            "upperRoman",
+            "decimal",
+            "lowerLetter",
+            "upperLetter"
+          ],
+          "description": "摘要与目录那几节的页码数字样式。roman 是别名，等同 lowerRoman；实际写入 pgNumType@w:fmt。"
+        },
+        "bodyStartNumber": {
+          "type": "integer"
+        },
+        "appendixContinuesBody": {
+          "type": "boolean"
+        },
+        "pageNumberNumeral": {
+          "type": "string",
+          "enum": [
+            "decimal",
+            "lowerRoman",
+            "upperRoman",
+            "lowerLetter",
+            "upperLetter"
+          ],
+          "description": "页码数字样式；lowerRoman/upperRoman 为罗马小写/大写。"
+        },
+        "pageNumberPosition": {
+          "type": "string",
+          "enum": [
+            "footer",
+            "header"
+          ],
+          "description": "页码所在位置：页脚或页眉。"
+        }
+      }
+    },
+    "sectionBreak": {
+      "type": "object",
+      "properties": {
+        "newPagePerLevel1Heading": {
+          "type": "boolean"
+        },
+        "method": {
+          "enum": [
+            "pageBreak",
+            "sectionBreak"
+          ]
+        },
+        "forbiddenMethod": {
+          "type": "string"
+        },
+        "level2And3NewPage": {
+          "type": "boolean"
+        }
+      }
+    },
+    "reference": {
+      "type": "object",
+      "properties": {
+        "inTextCitation": {
+          "type": "string"
+        },
+        "inTextPatterns": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "listStandard": {
+          "type": "string"
+        },
+        "fontCN": {
+          "type": "string"
+        },
+        "fontEN": {
+          "type": "string"
+        },
+        "sizePt": {
+          "type": "number"
+        },
+        "types": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "templates": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "aiSupplement": {
+      "type": "object",
+      "properties": {
+        "defaultFormat": {
+          "type": "string"
+        },
+        "codeReviewMayKeepMd": {
+          "type": "boolean"
+        },
+        "backupRequiredBeforeEdit": {
+          "type": "boolean"
+        },
+        "backupNamePattern": {
+          "type": "string"
+        },
+        "backupLocation": {
+          "type": "string"
+        },
+        "fileNamingPattern": {
+          "type": "string"
+        },
+        "fileNamingExample": {
+          "type": "string"
+        },
+        "fileNamingForbidPureChinese": {
+          "type": "boolean"
+        },
+        "codeReviewSections": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "codeReviewTemplate": {
+          "type": "string"
+        },
+        "requiredDirs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "skillDir": {
+          "type": "string"
+        },
+        "sourceDir": {
+          "type": "string"
+        },
+        "headingNormalize": {
+          "type": "object",
+          "properties": {
+            "steps": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "backupBeforeConvert": {
+              "type": "boolean"
+            },
+            "mustShowCandidatesFirst": {
+              "type": "boolean"
+            },
+            "uncertainMarkPending": {
+              "type": "boolean"
+            },
+            "formatRules": {
+              "type": "object"
+            },
+            "textPatterns": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "textPatternExclusions": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "positionRules": {
+              "type": "object"
+            },
+            "levelDecision": {
+              "type": "object"
+            },
+            "safetyBoundaries": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "misjudgeCases": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "checklist": {
+      "type": "array",
+      "description": "生成前自检清单；label 是给模型看的静态文案，改规则时记得同步",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "label"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "rule": {
+            "type": "string",
+            "description": "指向本表内的键路径，如 body.lineSpacing"
+          }
+        }
+      }
+    },
+    "cover": {
+      "type": "object",
+      "description": "封面设置。title/subtitle 留空则回落到 meta.title / meta.subtitle。",
+      "required": [
+        "titleFontCN",
+        "titleSizePt",
+        "titleBold",
+        "alignment"
+      ],
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "subtitle": {
+          "type": "string"
+        },
+        "showProject": {
+          "type": "boolean"
+        },
+        "showDate": {
+          "type": "boolean"
+        },
+        "titleFontCN": {
+          "type": "string"
+        },
+        "titleFontEN": {
+          "type": "string"
+        },
+        "titleSizePt": {
+          "type": "number",
+          "minimum": 6,
+          "maximum": 100
+        },
+        "titleBold": {
+          "type": "boolean"
+        },
+        "color": {
+          "type": "string",
+          "pattern": "^[0-9A-Fa-f]{6}$",
+          "description": "六位十六进制 RGB，不带 # 号。"
+        },
+        "alignment": {
+          "type": "string",
+          "enum": [
+            "left",
+            "center",
+            "right"
+          ]
+        },
+        "spaceBeforePt": {
+          "type": "number",
+          "minimum": 0
+        }
+      }
+    },
+    "toc": {
+      "type": "object",
+      "description": "目录设置。",
+      "required": [
+        "enabled",
+        "title",
+        "maxLevel"
+      ],
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "title": {
+          "type": "string"
+        },
+        "titleFontCN": {
+          "type": "string"
+        },
+        "titleSizePt": {
+          "type": "number",
+          "minimum": 6,
+          "maximum": 100
+        },
+        "titleBold": {
+          "type": "boolean"
+        },
+        "titleColor": {
+          "type": "string",
+          "pattern": "^[0-9A-Fa-f]{6}$",
+          "description": "六位十六进制 RGB，不带 # 号。"
+        },
+        "entryFontCN": {
+          "type": "string"
+        },
+        "entrySizePt": {
+          "type": "number",
+          "minimum": 6,
+          "maximum": 100
+        },
+        "entryColor": {
+          "type": "string",
+          "pattern": "^[0-9A-Fa-f]{6}$",
+          "description": "六位十六进制 RGB，不带 # 号。"
+        },
+        "maxLevel": {
+          "type": "number",
+          "minimum": 1,
+          "maximum": 9
+        },
+        "showPageNumbers": {
+          "type": "boolean"
+        },
+        "alignment": {
+          "type": "string",
+          "enum": [
+            "left",
+            "center",
+            "right",
+            "both"
+          ]
+        }
+      }
+    }
+  }
+}
